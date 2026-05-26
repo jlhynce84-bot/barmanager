@@ -6,492 +6,283 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <title>BarManager</title>
+<link rel="manifest" href="/barmanager/manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0f0f0f;
-    --surface: #1a1a1a;
-    --surface2: #242424;
-    --surface3: #2e2e2e;
-    --amber: #f59e0b;
-    --amber-dark: #b45309;
-    --amber-light: #fcd34d;
-    --red: #ef4444;
-    --green: #22c55e;
-    --text: #f5f5f5;
-    --text-muted: #9ca3af;
-    --border: #333;
-    --nav-h: 64px;
-    --header-h: 56px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+:root{
+  --bg:#0f0f0f;--surface:#1a1a1a;--surface2:#242424;--surface3:#2e2e2e;
+  --amber:#f59e0b;--amber-dark:#b45309;--red:#ef4444;--green:#22c55e;--blue:#3b82f6;
+  --text:#f5f5f5;--text-muted:#9ca3af;--border:#333;
+  --nav-h:60px;--header-h:56px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;min-height:100vh;overflow-x:hidden;}
 
-  /* HEADER */
-  .header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    height: var(--header-h);
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 16px;
-  }
-  .header-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
-    color: var(--amber);
-    letter-spacing: 2px;
-  }
-  .header-sub { font-size: 12px; color: var(--text-muted); }
-  .header-barman {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-size: 13px;
-  }
-  .header-barman .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--green);
-  }
+/* HEADER */
+.header{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--header-h);background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 14px;}
+.header-title{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--amber);letter-spacing:2px;}
+.header-sub{font-size:11px;color:var(--text-muted);}
+.header-right{display:flex;align-items:center;gap:8px;}
+.ca-badge{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:20px;padding:4px 10px;font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--amber);}
+.barman-btn{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 10px;cursor:pointer;font-size:12px;}
+.barman-btn .dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
 
-  /* BOTTOM NAV */
-  .nav {
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-    height: var(--nav-h);
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    display: flex;
-  }
-  .nav-item {
-    flex: 1; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 4px;
-    cursor: pointer; color: var(--text-muted);
-    font-size: 11px; font-weight: 500;
-    transition: color 0.2s;
-    border: none; background: none;
-  }
-  .nav-item svg { width: 22px; height: 22px; }
-  .nav-item.active { color: var(--amber); }
-  .nav-item.active svg { filter: drop-shadow(0 0 4px var(--amber)); }
+/* NAV */
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:100;height:var(--nav-h);background:var(--surface);border-top:1px solid var(--border);display:flex;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:var(--text-muted);font-size:9px;font-weight:600;transition:color .2s;border:none;background:none;letter-spacing:.5px;text-transform:uppercase;}
+.nav-item svg{width:19px;height:19px;}
+.nav-item.active{color:var(--amber);}
 
-  /* PAGES */
-  .page {
-    display: none;
-    padding: calc(var(--header-h) + 12px) 14px calc(var(--nav-h) + 16px);
-    min-height: 100vh;
-    animation: fadeIn 0.2s ease;
-  }
-  .page.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+/* PAGES */
+.page{display:none;padding:calc(var(--header-h)+10px) 12px calc(var(--nav-h)+12px);min-height:100vh;}
+.page.active{display:block;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 
-  /* CARDS */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 12px;
-  }
-  .card-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 14px;
-    letter-spacing: 1.5px;
-    color: var(--amber);
-    margin-bottom: 10px;
-  }
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1.5px;color:var(--amber);margin-bottom:10px;}
 
-  /* STAT CARDS */
-  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px;
-    text-align: center;
-  }
-  .stat-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 32px;
-    color: var(--amber);
-    line-height: 1;
-  }
-  .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;}
+.stat-value{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--amber);line-height:1;}
+.stat-label{font-size:10px;color:var(--text-muted);margin-top:3px;text-transform:uppercase;letter-spacing:.5px;}
 
-  /* BUTTONS */
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    padding: 12px 18px; border-radius: 10px; border: none;
-    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
-    cursor: pointer; transition: all 0.15s;
-  }
-  .btn-primary { background: var(--amber); color: #000; }
-  .btn-primary:active { background: var(--amber-dark); transform: scale(0.97); }
-  .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
-  .btn-secondary:active { background: var(--surface3); transform: scale(0.97); }
-  .btn-danger { background: var(--red); color: #fff; }
-  .btn-danger:active { opacity: 0.85; transform: scale(0.97); }
-  .btn-success { background: var(--green); color: #000; }
-  .btn-full { width: 100%; }
+/* PERIOD TABS */
+.period-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.period-tab{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);font-size:12px;font-weight:600;cursor:pointer;text-align:center;color:var(--text-muted);transition:all .15s;}
+.period-tab.active{background:var(--amber);color:#000;border-color:var(--amber);}
 
-  /* INPUTS */
-  input, select, textarea {
-    width: 100%; background: var(--surface2);
-    border: 1px solid var(--border); border-radius: 8px;
-    color: var(--text); font-family: 'DM Sans', sans-serif;
-    font-size: 15px; padding: 11px 12px;
-    outline: none; transition: border-color 0.2s;
-  }
-  input:focus, select:focus { border-color: var(--amber); }
-  select option { background: var(--surface2); }
-  label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
-  .form-group { margin-bottom: 12px; }
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 16px;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;}
+.btn-primary{background:var(--amber);color:#000;}
+.btn-primary:active{background:var(--amber-dark);transform:scale(.97);}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+.btn-secondary:active{background:var(--surface3);}
+.btn-danger{background:var(--red);color:#fff;}
+.btn-success{background:var(--green);color:#000;}
+.btn-full{width:100%;}
 
-  /* PRODUCT GRID (POS) */
-  .product-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
-    margin-bottom: 12px;
-  }
-  .product-btn {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 6px;
-    text-align: center; cursor: pointer;
-    transition: all 0.15s;
-    display: flex; flex-direction: column; gap: 4px;
-    align-items: center;
-  }
-  .product-btn:active { transform: scale(0.93); background: var(--surface3); border-color: var(--amber); }
-  .product-btn .p-name { font-size: 12px; font-weight: 600; line-height: 1.2; }
-  .product-btn .p-price { font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--amber); }
-  .product-btn .p-stock { font-size: 10px; color: var(--text-muted); }
+/* INPUTS */
+input,select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;padding:10px 12px;outline:none;transition:border-color .2s;}
+input:focus,select:focus{border-color:var(--amber);}
+input[type=number]{-moz-appearance:textfield;}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
+label{font-size:11px;color:var(--text-muted);font-weight:600;margin-bottom:4px;display:block;text-transform:uppercase;letter-spacing:.5px;}
+.form-group{margin-bottom:10px;}
 
-  /* ORDER SUMMARY */
-  .order-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 8px 0; border-bottom: 1px solid var(--border);
-  }
-  .order-item:last-child { border-bottom: none; }
-  .order-item-name { font-size: 14px; font-weight: 500; }
-  .order-item-controls { display: flex; align-items: center; gap: 8px; }
-  .qty-btn {
-    width: 28px; height: 28px; border-radius: 6px; border: none;
-    background: var(--surface3); color: var(--text);
-    font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  }
-  .qty-btn:active { background: var(--amber); color: #000; }
-  .order-qty { font-family: 'Bebas Neue', sans-serif; font-size: 18px; min-width: 20px; text-align: center; }
-  .order-item-price { font-size: 14px; color: var(--amber); font-weight: 600; min-width: 50px; text-align: right; }
+/* POS */
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px;}
+.product-btn{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 5px;text-align:center;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:3px;align-items:center;}
+.product-btn:active{transform:scale(.93);border-color:var(--amber);}
+.product-btn.out{opacity:.4;pointer-events:none;}
+.p-name{font-size:11px;font-weight:600;line-height:1.2;}
+.p-price{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--amber);}
+.p-stock{font-size:9px;color:var(--text-muted);}
+.p-stock.low{color:var(--red);}
 
-  /* ORDER TOTAL */
-  .order-total {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 0; margin-top: 4px;
-  }
-  .order-total-label { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px; }
-  .order-total-value { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--amber); }
+/* ORDER */
+.order-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);}
+.order-item:last-child{border-bottom:none;}
+.order-item-name{font-size:13px;font-weight:500;flex:1;}
+.qty-btn{width:26px;height:26px;border-radius:6px;border:none;background:var(--surface3);color:var(--text);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.qty-btn:active{background:var(--amber);color:#000;}
+.qty-input{width:46px;text-align:center;padding:3px 4px;font-family:'Bebas Neue',sans-serif;font-size:17px;border-radius:6px;}
+.order-item-price{font-size:13px;color:var(--amber);font-weight:600;min-width:55px;text-align:right;}
+.order-total-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0 4px;}
+.order-total-label{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1px;}
+.order-total-value{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--amber);}
 
-  /* LIST ITEMS */
-  .list-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 11px 0; border-bottom: 1px solid var(--border);
-  }
-  .list-item:last-child { border-bottom: none; }
-  .list-item-name { font-size: 14px; font-weight: 500; }
-  .list-item-sub { font-size: 12px; color: var(--text-muted); }
-  .badge {
-    display: inline-flex; align-items: center; justify-content: center;
-    padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
-  }
-  .badge-amber { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
-  .badge-red { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
-  .badge-green { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+/* LIST */
+.list-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
+.list-item:last-child{border-bottom:none;}
+.list-item-name{font-size:14px;font-weight:500;}
+.list-item-sub{font-size:11px;color:var(--text-muted);}
 
-  /* SECTION HEADER */
-  .section-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px; letter-spacing: 2px; color: var(--amber);
-  }
+/* BADGES */
+.badge{display:inline-flex;align-items:center;justify-content:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;}
+.badge-amber{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+.badge-red{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+.badge-green{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+.badge-blue{background:rgba(59,130,246,.15);color:var(--blue);border:1px solid rgba(59,130,246,.3);}
 
-  /* MODAL */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 200;
-    background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
-    display: none; align-items: flex-end; justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--surface); border-radius: 20px 20px 0 0;
-    width: 100%; max-width: 500px;
-    padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
-    border: 1px solid var(--border); border-bottom: none;
-    animation: slideUp 0.25s ease;
-    max-height: 85vh; overflow-y: auto;
-  }
-  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .modal-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px; letter-spacing: 2px;
-    color: var(--amber); margin-bottom: 16px;
-  }
-  .modal-close {
-    position: absolute; top: 14px; right: 16px;
-    background: var(--surface3); border: none; color: var(--text);
-    width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
-    font-size: 18px; display: flex; align-items: center; justify-content: center;
-  }
+/* SECTION HEADER */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--amber);}
 
-  /* TOAST */
-  .toast {
-    position: fixed; bottom: calc(var(--nav-h) + 12px); left: 50%; transform: translateX(-50%);
-    background: var(--surface3); color: var(--text);
-    padding: 10px 20px; border-radius: 20px;
-    font-size: 13px; font-weight: 500;
-    z-index: 500; white-space: nowrap;
-    animation: toastIn 0.3s ease forwards;
-    border: 1px solid var(--border);
-  }
-  .toast.success { background: rgba(34,197,94,0.2); border-color: var(--green); color: var(--green); }
-  .toast.error { background: rgba(239,68,68,0.2); border-color: var(--red); color: var(--red); }
-  @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.8);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:500px;padding:18px 16px calc(18px + env(safe-area-inset-bottom));border:1px solid var(--border);border-bottom:none;animation:slideUp .25s ease;max-height:88vh;overflow-y:auto;position:relative;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--amber);margin-bottom:14px;}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--surface3);border:none;color:var(--text);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
 
-  /* CLÔTURE REPORT */
-  .report-row {
-    display: flex; justify-content: space-between;
-    padding: 8px 0; border-bottom: 1px solid var(--border);
-    font-size: 14px;
-  }
-  .report-row:last-child { border-bottom: none; }
-  .report-row.total {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px; letter-spacing: 1px;
-    color: var(--amber); border-bottom: none; margin-top: 4px;
-  }
+/* TOAST */
+.toast{position:fixed;bottom:calc(var(--nav-h)+10px);left:50%;transform:translateX(-50%);background:var(--surface3);color:var(--text);padding:9px 18px;border-radius:20px;font-size:12px;font-weight:600;z-index:500;white-space:nowrap;animation:toastIn .3s ease forwards;border:1px solid var(--border);}
+.toast.success{background:rgba(34,197,94,.2);border-color:var(--green);color:var(--green);}
+.toast.error{background:rgba(239,68,68,.2);border-color:var(--red);color:var(--red);}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 
-  /* BARMAN SELECTOR */
-  .barman-selector {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
-  }
-  .barman-chip {
-    padding: 8px 14px; border-radius: 20px;
-    border: 1.5px solid var(--border);
-    background: var(--surface2);
-    font-size: 13px; font-weight: 600; cursor: pointer;
-    transition: all 0.15s;
-  }
-  .barman-chip.selected {
-    background: var(--amber); color: #000; border-color: var(--amber);
-  }
+/* REPORT */
+.report-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.report-row:last-child{border-bottom:none;}
+.report-row.total{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--amber);padding-top:10px;}
 
-  /* EMPTY STATE */
-  .empty {
-    text-align: center; padding: 40px 20px;
-    color: var(--text-muted); font-size: 14px;
-  }
-  .empty-icon { font-size: 40px; margin-bottom: 10px; }
+/* BARMANS */
+.barman-selector{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}
+.barman-chip{padding:7px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
+.barman-chip.selected{background:var(--amber);color:#000;border-color:var(--amber);}
 
-  /* DIVIDER */
-  .divider { height: 1px; background: var(--border); margin: 12px 0; }
+/* SALES HISTORY */
+.sale-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;}
+.sale-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.sale-barman{font-size:12px;font-weight:700;color:var(--amber);}
+.sale-time{font-size:10px;color:var(--text-muted);}
+.sale-detail{font-size:11px;color:var(--text-muted);}
+.sale-total{font-family:'Bebas Neue',sans-serif;font-size:16px;}
 
-  /* STOCK CONTROLS */
-  .stock-controls { display: flex; align-items: center; gap: 8px; }
-  .stock-qty { font-family: 'Bebas Neue', sans-serif; font-size: 20px; min-width: 30px; text-align: center; }
+/* ARCHIVE */
+.archive-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.archive-header{display:flex;justify-content:space-between;align-items:center;padding:12px;cursor:pointer;}
+.archive-date{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;}
+.archive-sub{font-size:11px;color:var(--text-muted);}
+.archive-total{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--amber);}
+.archive-body{display:none;padding:0 12px 12px;border-top:1px solid var(--border);}
+.archive-body.open{display:block;}
+.archive-section{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin:8px 0 4px;}
 
-  /* WELCOME SCREEN */
-  #welcome-screen {
-    position: fixed; inset: 0; z-index: 300;
-    background: var(--bg); display: flex; align-items: center; justify-content: center;
-    padding: 24px;
-  }
-  .welcome-inner { width: 100%; max-width: 400px; }
-  .welcome-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 60px; color: var(--amber); letter-spacing: 4px;
-    line-height: 1; margin-bottom: 4px;
-  }
-  .welcome-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
-  .welcome-step { display: none; }
-  .welcome-step.active { display: block; }
-  .step-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; margin-bottom: 16px; color: var(--text); }
-  .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-  .tag {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 20px; padding: 6px 12px;
-    font-size: 13px; display: flex; align-items: center; gap: 6px;
-  }
-  .tag-remove { cursor: pointer; color: var(--red); font-size: 16px; line-height: 1; }
-  .progress-dots { display: flex; gap: 6px; margin-bottom: 24px; }
-  .dot-step { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.2s; }
-  .dot-step.active { background: var(--amber); }
+/* STATS CHARTS */
+.stat-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.stat-bar-label{font-size:12px;min-width:80px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stat-bar-track{flex:1;height:6px;background:var(--surface3);border-radius:3px;overflow:hidden;}
+.stat-bar-fill{height:100%;background:var(--amber);border-radius:3px;transition:width .5s ease;}
+.stat-bar-val{font-size:11px;color:var(--text-muted);min-width:40px;text-align:right;}
 
-  /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 2px; }
+/* WELCOME */
+#welcome-screen{position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px;}
+.welcome-inner{width:100%;max-width:380px;}
+.welcome-logo{font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--amber);letter-spacing:4px;line-height:1;margin-bottom:4px;}
+.welcome-sub{color:var(--text-muted);font-size:13px;margin-bottom:28px;}
+.welcome-step{display:none;}
+.welcome-step.active{display:block;}
+.step-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;margin-bottom:14px;}
+.tag-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:7px;}
+.tag{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-size:12px;display:flex;align-items:center;gap:5px;}
+.tag-remove{cursor:pointer;color:var(--red);font-size:14px;}
+.progress-dots{display:flex;gap:6px;margin-bottom:20px;}
+.dot-step{width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .2s;}
+.dot-step.active{background:var(--amber);}
 
-  .flex-row { display: flex; gap: 8px; }
-  .flex-1 { flex: 1; }
-
-  /* HISTORIQUE */
-  .sale-item {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 12px; margin-bottom: 8px;
-  }
-  .sale-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .sale-item-barman { font-size: 13px; font-weight: 600; color: var(--amber); }
-  .sale-item-time { font-size: 11px; color: var(--text-muted); }
-  .sale-item-detail { font-size: 12px; color: var(--text-muted); }
-  .sale-item-total { font-family: 'Bebas Neue', sans-serif; font-size: 18px; }
+/* MISC */
+.empty{text-align:center;padding:32px 16px;color:var(--text-muted);font-size:13px;}
+.empty-icon{font-size:36px;margin-bottom:8px;}
+.flex-row{display:flex;gap:8px;}
+.flex-1{flex:1;}
+.divider{height:1px;background:var(--border);margin:10px 0;}
+.month-label{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:2px;color:var(--text-muted);padding:8px 0 4px;}
+.stock-controls{display:flex;align-items:center;gap:7px;}
+.stock-qty{font-family:'Bebas Neue',sans-serif;font-size:18px;min-width:28px;text-align:center;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:2px;}
 </style>
 </head>
 <body>
 
-<!-- WELCOME SCREEN -->
+<!-- WELCOME -->
 <div id="welcome-screen">
   <div class="welcome-inner">
     <div class="welcome-logo">BAR<br>MANAGER</div>
     <div class="welcome-sub">Configuration initiale</div>
-
     <div class="progress-dots">
       <div class="dot-step active" id="dot-0"></div>
       <div class="dot-step" id="dot-1"></div>
       <div class="dot-step" id="dot-2"></div>
     </div>
-
-    <!-- STEP 0: Barmans -->
     <div class="welcome-step active" id="step-0">
-      <div class="step-title">👨‍🍺 Ajouter des Barmans</div>
+      <div class="step-title">👨‍🍺 Barmans</div>
       <div class="form-group">
         <label>Nom du barman</label>
         <div class="flex-row">
-          <input type="text" id="w-barman-name" placeholder="Ex: Jean, Marie…" class="flex-1">
-          <button class="btn btn-primary" onclick="addWelcomeBarman()">+</button>
+          <input type="text" id="w-barman-name" placeholder="Jean, Marie…" class="flex-1">
+          <button class="btn btn-primary" onclick="addWB()">+</button>
         </div>
       </div>
       <div class="tag-list" id="w-barman-list"></div>
-      <div style="margin-top:20px;">
-        <button class="btn btn-primary btn-full" onclick="goStep(1)" id="btn-step-0">Suivant →</button>
-      </div>
+      <div style="margin-top:18px;"><button class="btn btn-primary btn-full" onclick="goStep(1)">Suivant →</button></div>
     </div>
-
-    <!-- STEP 1: Produits -->
     <div class="welcome-step" id="step-1">
-      <div class="step-title">🍺 Ajouter des Produits</div>
-      <div class="form-group">
-        <label>Nom du produit</label>
-        <input type="text" id="w-prod-name" placeholder="Ex: Bière, Coca, Whisky…">
-      </div>
+      <div class="step-title">🍺 Produits</div>
+      <div class="form-group"><label>Nom</label><input type="text" id="w-prod-name" placeholder="Bière, Coca…"></div>
       <div class="flex-row">
-        <div class="form-group flex-1">
-          <label>Prix (FCFA)</label>
-          <input type="number" id="w-prod-price" placeholder="500" min="0">
-        </div>
-        <div class="form-group flex-1">
-          <label>Stock initial</label>
-          <input type="number" id="w-prod-stock" placeholder="50" min="0">
-        </div>
+        <div class="form-group flex-1"><label>Prix (FCFA)</label><input type="number" id="w-prod-price" placeholder="500"></div>
+        <div class="form-group flex-1"><label>Stock</label><input type="number" id="w-prod-stock" placeholder="50"></div>
       </div>
-      <button class="btn btn-secondary btn-full" onclick="addWelcomeProduct()" style="margin-bottom:10px;">+ Ajouter produit</button>
+      <button class="btn btn-secondary btn-full" onclick="addWP()" style="margin-bottom:8px;">+ Ajouter</button>
       <div class="tag-list" id="w-prod-list"></div>
-      <div style="margin-top:20px;" class="flex-row">
+      <div style="margin-top:18px;" class="flex-row">
         <button class="btn btn-secondary" onclick="goStep(0)">← Retour</button>
         <button class="btn btn-primary flex-1" onclick="goStep(2)">Suivant →</button>
       </div>
     </div>
-
-    <!-- STEP 2: Confirmation -->
     <div class="welcome-step" id="step-2">
-      <div class="step-title">✅ Tout est prêt !</div>
-      <div id="welcome-summary" style="margin-bottom:20px;"></div>
+      <div class="step-title">✅ Prêt !</div>
+      <div id="w-summary" style="margin-bottom:18px;color:var(--text-muted);font-size:14px;"></div>
       <button class="btn btn-primary btn-full" onclick="finishSetup()">🚀 Lancer BarManager</button>
     </div>
   </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- APP -->
 <div id="app" style="display:none;">
-
-  <!-- HEADER -->
   <div class="header">
     <div>
       <div class="header-title">BarManager</div>
       <div class="header-sub" id="header-date"></div>
     </div>
-    <div class="header-barman" onclick="showBarmanModal()">
-      <div class="dot"></div>
-      <span id="header-barman-name">Sélectionner</span>
+    <div class="header-right">
+      <div class="ca-badge" id="ca-jour">0 FCFA</div>
+      <div class="barman-btn" onclick="showBarmanModal()">
+        <div class="dot"></div>
+        <span id="header-barman">Barman</span>
+      </div>
     </div>
   </div>
-
-  <!-- PAGES -->
 
   <!-- ACCUEIL -->
   <div class="page active" id="page-accueil">
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-value" id="stat-total">0</div>
-        <div class="stat-label">FCFA aujourd'hui</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="stat-ventes">0</div>
-        <div class="stat-label">Ventes</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="stat-produits">0</div>
-        <div class="stat-label">Produits</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="stat-barmans">0</div>
-        <div class="stat-label">Barmans</div>
-      </div>
+      <div class="stat-card"><div class="stat-value" id="s-ca">0</div><div class="stat-label">CA Jour (FCFA)</div></div>
+      <div class="stat-card"><div class="stat-value" id="s-ventes">0</div><div class="stat-label">Ventes</div></div>
+      <div class="stat-card"><div class="stat-value" id="s-ca-semaine">0</div><div class="stat-label">CA Semaine</div></div>
+      <div class="stat-card"><div class="stat-value" id="s-ca-mois">0</div><div class="stat-label">CA Mois</div></div>
     </div>
-
     <div class="card">
       <div class="card-title">📊 TOP PRODUITS DU JOUR</div>
-      <div id="top-produits"><div class="empty" style="padding:16px 0;"><div class="empty-icon">📭</div>Aucune vente aujourd'hui</div></div>
+      <div id="top-produits-accueil"></div>
     </div>
-
     <div class="card">
-      <div class="card-title">👥 BARMANS ACTIFS</div>
-      <div id="barmans-stats"></div>
+      <div class="card-title">👥 CA PAR BARMAN</div>
+      <div id="ca-barmans-accueil"></div>
     </div>
   </div>
 
-  <!-- VENTES (POS) -->
+  <!-- VENTES -->
   <div class="page" id="page-ventes">
     <div class="card">
       <div class="card-title">👨‍🍺 BARMAN EN SERVICE</div>
-      <div class="barman-selector" id="pos-barman-selector"></div>
+      <div class="barman-selector" id="pos-barman-sel"></div>
     </div>
-
-    <div class="section-header">
-      <div class="section-title">🍺 PRODUITS</div>
-      <div id="pos-cat-filter" style="display:flex;gap:6px;"></div>
-    </div>
+    <div class="section-title" style="margin-bottom:8px;">🍺 PRODUITS</div>
     <div class="product-grid" id="pos-products"></div>
-
     <div class="card" id="order-card" style="display:none;">
-      <div class="card-title">🧾 COMMANDE EN COURS</div>
+      <div class="card-title">🧾 COMMANDE</div>
       <div id="order-items"></div>
-      <div class="order-total">
+      <div class="order-total-row">
         <div class="order-total-label">TOTAL</div>
         <div class="order-total-value"><span id="order-total">0</span> FCFA</div>
       </div>
-      <div class="flex-row">
+      <div class="flex-row" style="margin-top:6px;">
         <button class="btn btn-secondary flex-1" onclick="clearOrder()">✕ Annuler</button>
         <button class="btn btn-success flex-1" onclick="validateOrder()">✓ Valider</button>
       </div>
@@ -502,9 +293,14 @@
   <div class="page" id="page-stock">
     <div class="section-header">
       <div class="section-title">📦 STOCK</div>
-      <button class="btn btn-primary" onclick="openAddProductModal()" style="padding:8px 12px;font-size:13px;">+ Produit</button>
+      <button class="btn btn-primary" onclick="openAddProduct()" style="padding:7px 11px;font-size:12px;">+ Produit</button>
     </div>
     <div class="card">
+      <div class="card-title">📊 RÉSUMÉ PAR PRODUIT</div>
+      <div id="stock-resume"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📦 GESTION DU STOCK</div>
       <div id="stock-list"></div>
     </div>
   </div>
@@ -513,9 +309,35 @@
   <div class="page" id="page-historique">
     <div class="section-header">
       <div class="section-title">📋 HISTORIQUE</div>
-      <button class="btn btn-secondary" onclick="clearHistory()" style="padding:8px 12px;font-size:12px;">Effacer</button>
     </div>
+    <div class="period-tabs">
+      <div class="period-tab active" onclick="setPeriod('jour',this)">Aujourd'hui</div>
+      <div class="period-tab" onclick="setPeriod('semaine',this)">Semaine</div>
+      <div class="period-tab" onclick="setPeriod('mois',this)">Mois</div>
+    </div>
+    <div id="historique-stats" class="card" style="margin-bottom:10px;"></div>
     <div id="historique-list"></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="page" id="page-stats">
+    <div class="section-title" style="margin-bottom:10px;">📈 STATISTIQUES</div>
+    <div class="period-tabs">
+      <div class="period-tab active" onclick="setStatPeriod('semaine',this)">Semaine</div>
+      <div class="period-tab" onclick="setStatPeriod('mois',this)">Mois</div>
+    </div>
+    <div class="card">
+      <div class="card-title">💰 CA PAR BARMAN</div>
+      <div id="stats-barmans"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🍺 VENTES PAR PRODUIT</div>
+      <div id="stats-produits"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📅 CA PAR JOUR</div>
+      <div id="stats-jours"></div>
+    </div>
   </div>
 
   <!-- CAISSE -->
@@ -524,106 +346,87 @@
       <div class="card-title">💰 RÉCAPITULATIF DU JOUR</div>
       <div id="caisse-report"></div>
     </div>
-
     <div class="card">
-      <div class="card-title">👥 VENTES PAR BARMAN</div>
+      <div class="card-title">👥 PAR BARMAN</div>
       <div id="caisse-barmans"></div>
     </div>
-
     <div class="card">
-      <div class="card-title">🍺 VENTES PAR PRODUIT</div>
+      <div class="card-title">🍺 PAR PRODUIT</div>
       <div id="caisse-produits"></div>
     </div>
-
-    <button class="btn btn-danger btn-full" onclick="confirmCloture()" style="margin-top:4px;">
-      🔒 Clôturer la Caisse
-    </button>
+    <button class="btn btn-danger btn-full" onclick="confirmCloture()" style="margin-top:4px;">🔒 Clôturer la Caisse</button>
     <div style="height:8px;"></div>
-    <button class="btn btn-secondary btn-full" onclick="resetAll()">
-      ⚙️ Réinitialiser l'application
-    </button>
+    <button class="btn btn-secondary btn-full" onclick="resetAll()">⚙️ Réinitialiser</button>
   </div>
 
-  <!-- BOTTOM NAV -->
+  <!-- NAV -->
   <nav class="nav">
-    <button class="nav-item active" onclick="goPage('accueil', this)">
+    <button class="nav-item active" onclick="goPage('accueil',this)">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
       Accueil
     </button>
-    <button class="nav-item" onclick="goPage('ventes', this)">
+    <button class="nav-item" onclick="goPage('ventes',this)">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
       Ventes
     </button>
-    <button class="nav-item" onclick="goPage('stock', this)">
+    <button class="nav-item" onclick="goPage('stock',this)">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
       Stock
     </button>
-    <button class="nav-item" onclick="goPage('historique', this)">
+    <button class="nav-item" onclick="goPage('historique',this)">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
       Historique
     </button>
-    <button class="nav-item" onclick="goPage('caisse', this)">
+    <button class="nav-item" onclick="goPage('stats',this)">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      Stats
+    </button>
+    <button class="nav-item" onclick="goPage('caisse',this)">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
       Caisse
     </button>
   </nav>
-
 </div>
 
 <!-- MODALS -->
-<!-- Barman selector modal -->
 <div class="modal-overlay" id="modal-barman">
-  <div class="modal" style="position:relative;">
-    <div class="modal-title">👨‍🍺 CHOISIR UN BARMAN</div>
+  <div class="modal">
+    <div class="modal-title">👨‍🍺 BARMANS</div>
     <button class="modal-close" onclick="closeModal('modal-barman')">✕</button>
     <div id="modal-barman-list"></div>
-    <div style="margin-top:12px;">
-      <div class="form-group">
-        <label>Nouveau barman</label>
-        <div class="flex-row">
-          <input type="text" id="new-barman-input" placeholder="Nom…" class="flex-1">
-          <button class="btn btn-primary" onclick="addBarman()">+</button>
-        </div>
+    <div class="divider"></div>
+    <div class="form-group">
+      <label>Nouveau barman</label>
+      <div class="flex-row">
+        <input type="text" id="new-barman-input" placeholder="Nom…" class="flex-1">
+        <button class="btn btn-primary" onclick="addBarman()">+</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Add Product Modal -->
-<div class="modal-overlay" id="modal-add-product">
-  <div class="modal" style="position:relative;">
-    <div class="modal-title" id="modal-prod-title">+ NOUVEAU PRODUIT</div>
-    <button class="modal-close" onclick="closeModal('modal-add-product')">✕</button>
+<div class="modal-overlay" id="modal-product">
+  <div class="modal">
+    <div class="modal-title" id="modal-prod-title">+ PRODUIT</div>
+    <button class="modal-close" onclick="closeModal('modal-product')">✕</button>
     <input type="hidden" id="edit-prod-id">
-    <div class="form-group">
-      <label>Nom du produit</label>
-      <input type="text" id="prod-name-input" placeholder="Bière, Coca, Whisky…">
-    </div>
+    <div class="form-group"><label>Nom</label><input type="text" id="prod-name-input" placeholder="Bière, Coca…"></div>
     <div class="flex-row">
-      <div class="form-group flex-1">
-        <label>Prix (FCFA)</label>
-        <input type="number" id="prod-price-input" placeholder="500" min="0">
-      </div>
-      <div class="form-group flex-1">
-        <label>Stock</label>
-        <input type="number" id="prod-stock-input" placeholder="0" min="0">
-      </div>
+      <div class="form-group flex-1"><label>Prix (FCFA)</label><input type="number" id="prod-price-input" placeholder="500"></div>
+      <div class="form-group flex-1"><label>Stock</label><input type="number" id="prod-stock-input" placeholder="0"></div>
     </div>
     <div class="flex-row" style="margin-top:4px;">
-      <button class="btn btn-secondary flex-1" onclick="closeModal('modal-add-product')">Annuler</button>
+      <button class="btn btn-secondary flex-1" onclick="closeModal('modal-product')">Annuler</button>
       <button class="btn btn-primary flex-1" onclick="saveProduct()">Enregistrer</button>
     </div>
   </div>
 </div>
 
-<!-- Confirm Cloture Modal -->
 <div class="modal-overlay" id="modal-cloture">
-  <div class="modal" style="position:relative;">
-    <div class="modal-title">⚠️ CLÔTURER LA CAISSE ?</div>
+  <div class="modal">
+    <div class="modal-title">⚠️ CLÔTURER ?</div>
     <button class="modal-close" onclick="closeModal('modal-cloture')">✕</button>
-    <p style="color:var(--text-muted);font-size:14px;margin-bottom:16px;">
-      Cette action va archiver toutes les ventes du jour et remettre les compteurs à zéro. Le stock reste inchangé.
-    </p>
+    <p style="color:var(--text-muted);font-size:13px;margin-bottom:14px;">Les ventes seront archivées (visibles 30 jours). Le stock est conservé et modifiable.</p>
     <div class="flex-row">
       <button class="btn btn-secondary flex-1" onclick="closeModal('modal-cloture')">Annuler</button>
       <button class="btn btn-danger flex-1" onclick="doCloture()">🔒 Confirmer</button>
@@ -632,83 +435,62 @@
 </div>
 
 <script>
-// ==================== DATA ====================
-let data = {
-  barmans: [],
-  products: [],
-  sales: [],      // today's sales
-  history: [],    // archived sales
-  currentBarman: null,
-  setupDone: false
+// ===================== DATA =====================
+let D = {
+  barmans: [], products: [], sales: [], archives: [],
+  currentBarman: null, setupDone: false
 };
+let order = {};
+let wBarmans = [], wProducts = [];
+let histPeriod = 'jour', statPeriod = 'semaine';
 
-let order = {}; // { productId: qty }
-let welcomeBarmans = [];
-let welcomeProducts = [];
-
-// ==================== STORAGE ====================
-function save() { localStorage.setItem('barmanager_v3', JSON.stringify(data)); }
+function save() { localStorage.setItem('bm_v5', JSON.stringify(D)); }
 function load() {
-  const raw = localStorage.getItem('barmanager_v3');
-  if (raw) { data = JSON.parse(raw); }
+  const r = localStorage.getItem('bm_v5');
+  if (r) D = JSON.parse(r);
+  if (!D.archives) D.archives = [];
+  if (!D.sales) D.sales = [];
 }
 
-// ==================== INIT ====================
 load();
-if (data.setupDone) {
+if (D.setupDone) {
   document.getElementById('welcome-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   initApp();
-} else {
-  document.getElementById('welcome-screen').style.display = 'flex';
 }
 
 function initApp() {
-  updateHeaderDate();
+  document.getElementById('header-date').textContent = new Date().toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
   updateHeaderBarman();
-  renderStats();
+  renderAll();
+}
+
+function renderAll() {
+  renderCA();
+  renderAccueil();
   renderPOS();
   renderStock();
   renderHistorique();
+  renderStats();
   renderCaisse();
 }
 
-function updateHeaderDate() {
-  const el = document.getElementById('header-date');
-  const now = new Date();
-  el.textContent = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
-}
-
-function updateHeaderBarman() {
-  const el = document.getElementById('header-barman-name');
-  const b = data.barmans.find(b => b.id === data.currentBarman);
-  el.textContent = b ? b.name : 'Sélectionner';
-}
-
-// ==================== WELCOME ====================
-function addWelcomeBarman() {
-  const input = document.getElementById('w-barman-name');
-  const name = input.value.trim();
-  if (!name) return;
-  welcomeBarmans.push({ id: Date.now(), name });
-  input.value = '';
-  renderWelcomeBarmans();
-}
-
-function renderWelcomeBarmans() {
-  const list = document.getElementById('w-barman-list');
-  list.innerHTML = welcomeBarmans.map((b, i) =>
-    `<div class="tag">${b.name} <span class="tag-remove" onclick="removeWB(${i})">✕</span></div>`
+// ===================== WELCOME =====================
+function addWB() {
+  const i = document.getElementById('w-barman-name');
+  const n = i.value.trim(); if (!n) return;
+  wBarmans.push({id: Date.now(), name: n}); i.value = '';
+  document.getElementById('w-barman-list').innerHTML = wBarmans.map((b,i) =>
+    `<div class="tag">${b.name}<span class="tag-remove" onclick="wBarmans.splice(${i},1);document.getElementById('w-barman-list').innerHTML=wBarmans.map((b,i)=>'<div class=\\'tag\\'>'+b.name+'<span class=\\'tag-remove\\' onclick=\\'wBarmans.splice('+i+',1)\\'>✕</span></div>').join('')">✕</span></div>`
   ).join('');
 }
-function removeWB(i) { welcomeBarmans.splice(i, 1); renderWelcomeBarmans(); }
 
-function addWelcomeProduct() {
-  const name = document.getElementById('w-prod-name').value.trim();
-  const price = parseFloat(document.getElementById('w-prod-price').value) || 0;
-  const stock = parseInt(document.getElementById('w-prod-stock').value) || 0;
-  if (!name || price <= 0) { toast('Remplis le nom et le prix', 'error'); return; }
-  welcomeProducts.push({ id: Date.now(), name, price, stock });
+function addWP() {
+  const n = document.getElementById('w-prod-name').value.trim();
+  const p = parseFloat(document.getElementById('w-prod-price').value) || 0;
+  const s = parseInt(document.getElementById('w-prod-stock').value) || 0;
+  if (!n || p <= 0) { toast('Remplis nom et prix', 'error'); return; }
+  wProducts.push({id: Date.now(), name: n, price: p, stock: s, initialStock: s});
   document.getElementById('w-prod-name').value = '';
   document.getElementById('w-prod-price').value = '';
   document.getElementById('w-prod-stock').value = '';
@@ -716,22 +498,15 @@ function addWelcomeProduct() {
 }
 
 function renderWelcomeProducts() {
-  const list = document.getElementById('w-prod-list');
-  list.innerHTML = welcomeProducts.map((p, i) =>
-    `<div class="tag">${p.name} (${p.price} FCFA) <span class="tag-remove" onclick="removeWP(${i})">✕</span></div>`
+  document.getElementById('w-prod-list').innerHTML = wProducts.map((p,i) =>
+    `<div class="tag">${p.name} (${p.price} FCFA)<span class="tag-remove" onclick="wProducts.splice(${i},1);renderWelcomeProducts()">✕</span></div>`
   ).join('');
 }
-function removeWP(i) { welcomeProducts.splice(i, 1); renderWelcomeProducts(); }
 
 function goStep(n) {
-  if (n === 1 && welcomeBarmans.length === 0) { toast('Ajoute au moins un barman', 'error'); return; }
-  if (n === 2 && welcomeProducts.length === 0) { toast('Ajoute au moins un produit', 'error'); return; }
-  if (n === 2) {
-    document.getElementById('welcome-summary').innerHTML = `
-      <div class="report-row"><span>Barmans</span><span class="badge badge-green">${welcomeBarmans.length}</span></div>
-      <div class="report-row"><span>Produits</span><span class="badge badge-amber">${welcomeProducts.length}</span></div>
-    `;
-  }
+  if (n === 1 && wBarmans.length === 0) { toast('Ajoute au moins un barman', 'error'); return; }
+  if (n === 2 && wProducts.length === 0) { toast('Ajoute au moins un produit', 'error'); return; }
+  if (n === 2) document.getElementById('w-summary').textContent = `${wBarmans.length} barman(s) · ${wProducts.length} produit(s) configurés`;
   for (let i = 0; i < 3; i++) {
     document.getElementById('step-'+i).classList.toggle('active', i === n);
     document.getElementById('dot-'+i).classList.toggle('active', i === n);
@@ -739,233 +514,221 @@ function goStep(n) {
 }
 
 function finishSetup() {
-  data.barmans = welcomeBarmans;
-  data.products = welcomeProducts;
-  data.setupDone = true;
-  data.currentBarman = welcomeBarmans[0]?.id || null;
+  D.barmans = wBarmans; D.products = wProducts;
+  D.setupDone = true; D.currentBarman = wBarmans[0]?.id || null;
   save();
   document.getElementById('welcome-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   initApp();
 }
 
-// ==================== NAVIGATION ====================
+// ===================== NAVIGATION =====================
 function goPage(name, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   if (el) el.classList.add('active');
-  if (name === 'accueil') renderStats();
+  if (name === 'accueil') renderAccueil();
   if (name === 'ventes') renderPOS();
   if (name === 'stock') renderStock();
   if (name === 'historique') renderHistorique();
+  if (name === 'stats') renderStats();
   if (name === 'caisse') renderCaisse();
 }
 
-// ==================== STATS ====================
-function renderStats() {
-  const todaySales = data.sales;
-  const total = todaySales.reduce((s, sale) => s + sale.total, 0);
-  document.getElementById('stat-total').textContent = total.toLocaleString('fr-FR');
-  document.getElementById('stat-ventes').textContent = todaySales.length;
-  document.getElementById('stat-produits').textContent = data.products.length;
-  document.getElementById('stat-barmans').textContent = data.barmans.length;
-
-  // Top products
-  const prodQty = {};
-  todaySales.forEach(sale => {
-    sale.items.forEach(item => {
-      prodQty[item.productId] = (prodQty[item.productId] || 0) + item.qty;
-    });
-  });
-  const sorted = Object.entries(prodQty).sort((a, b) => b[1] - a[1]).slice(0, 5);
-  const topEl = document.getElementById('top-produits');
-  if (sorted.length === 0) {
-    topEl.innerHTML = '<div class="empty" style="padding:16px 0;"><div class="empty-icon">📭</div>Aucune vente aujourd\'hui</div>';
-  } else {
-    topEl.innerHTML = sorted.map(([id, qty]) => {
-      const prod = data.products.find(p => p.id == id);
-      return `<div class="report-row"><span>${prod?.name || '?'}</span><span class="badge badge-amber">${qty} vendus</span></div>`;
-    }).join('');
-  }
-
-  // Barmans
-  const barmanEl = document.getElementById('barmans-stats');
-  const barmanTotals = {};
-  todaySales.forEach(s => {
-    barmanTotals[s.barmanId] = (barmanTotals[s.barmanId] || 0) + s.total;
-  });
-  if (data.barmans.length === 0) {
-    barmanEl.innerHTML = '<div class="empty" style="padding:12px 0;color:var(--text-muted);">Aucun barman</div>';
-  } else {
-    barmanEl.innerHTML = data.barmans.map(b => `
-      <div class="list-item">
-        <div><div class="list-item-name">${b.name}</div></div>
-        <div class="badge badge-amber">${(barmanTotals[b.id] || 0).toLocaleString('fr-FR')} FCFA</div>
-      </div>
-    `).join('');
-  }
+// ===================== CA BADGE =====================
+function renderCA() {
+  const today = todaySales();
+  const ca = today.reduce((s, x) => s + x.total, 0);
+  document.getElementById('ca-jour').textContent = ca.toLocaleString('fr-FR') + ' FCFA';
+  document.getElementById('s-ca').textContent = ca.toLocaleString('fr-FR');
+  document.getElementById('s-ventes').textContent = today.length;
+  // Semaine
+  const ws = weekSales();
+  document.getElementById('s-ca-semaine').textContent = ws.reduce((s,x)=>s+x.total,0).toLocaleString('fr-FR');
+  // Mois
+  const ms = monthSales();
+  document.getElementById('s-ca-mois').textContent = ms.reduce((s,x)=>s+x.total,0).toLocaleString('fr-FR');
 }
 
-// ==================== POS ====================
+// ===================== ACCUEIL =====================
+function renderAccueil() {
+  renderCA();
+  const today = todaySales();
+  // Top produits
+  const pq = {};
+  today.forEach(s => s.items.forEach(i => { pq[i.productId] = (pq[i.productId]||0) + i.qty; }));
+  const sorted = Object.entries(pq).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const topEl = document.getElementById('top-produits-accueil');
+  if (!sorted.length) {
+    topEl.innerHTML = '<div class="empty" style="padding:12px 0;"><div class="empty-icon">📭</div>Aucune vente aujourd\'hui</div>';
+  } else {
+    const max = sorted[0][1];
+    topEl.innerHTML = sorted.map(([id,qty]) => {
+      const p = D.products.find(p => p.id == id);
+      return `<div class="stat-bar-row">
+        <div class="stat-bar-label">${p?.name||'?'}</div>
+        <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${qty/max*100}%"></div></div>
+        <div class="stat-bar-val">×${qty}</div>
+      </div>`;
+    }).join('');
+  }
+  // CA barmans
+  const bt = {};
+  today.forEach(s => { bt[s.barmanId] = (bt[s.barmanId]||0) + s.total; });
+  document.getElementById('ca-barmans-accueil').innerHTML = D.barmans.map(b =>
+    `<div class="report-row"><span>${b.name}</span><span class="badge badge-amber">${(bt[b.id]||0).toLocaleString('fr-FR')} FCFA</span></div>`
+  ).join('') || '<div class="empty" style="padding:10px 0;">Aucun barman</div>';
+}
+
+// ===================== POS =====================
 function renderPOS() {
-  // Barman chips
-  const sel = document.getElementById('pos-barman-selector');
-  sel.innerHTML = data.barmans.map(b =>
-    `<div class="barman-chip ${b.id === data.currentBarman ? 'selected' : ''}" onclick="selectPOSBarman(${b.id})">${b.name}</div>`
+  document.getElementById('pos-barman-sel').innerHTML = D.barmans.map(b =>
+    `<div class="barman-chip ${b.id===D.currentBarman?'selected':''}" onclick="selectPOSBarman(${b.id})">${b.name}</div>`
   ).join('');
-
-  // Products
-  const grid = document.getElementById('pos-products');
-  grid.innerHTML = data.products.map(p => {
-    const low = p.stock <= 5;
-    return `
-      <div class="product-btn" onclick="addToOrder(${p.id})" ${p.stock <= 0 ? 'style="opacity:0.4;pointer-events:none;"' : ''}>
-        <div class="p-name">${p.name}</div>
-        <div class="p-price">${p.price}</div>
-        <div class="p-stock ${low ? 'badge-red' : ''}">${p.stock} en stock</div>
-      </div>
-    `;
-  }).join('');
-
+  document.getElementById('pos-products').innerHTML = D.products.map(p =>
+    `<div class="product-btn ${p.stock<=0?'out':''}" onclick="addToOrder(${p.id})">
+      <div class="p-name">${p.name}</div>
+      <div class="p-price">${p.price}</div>
+      <div class="p-stock ${p.stock<=5?'low':''}">${p.stock} stock</div>
+    </div>`
+  ).join('');
   renderOrder();
 }
 
 function selectPOSBarman(id) {
-  data.currentBarman = id;
-  save();
-  updateHeaderBarman();
-  renderPOS();
+  D.currentBarman = id; save(); updateHeaderBarman(); renderPOS();
 }
 
-function addToOrder(productId) {
-  if (!data.currentBarman) { toast('Sélectionne un barman d\'abord', 'error'); return; }
-  const prod = data.products.find(p => p.id == productId);
-  if (!prod || prod.stock <= 0) return;
-  const current = order[productId] || 0;
-  if (current >= prod.stock) { toast('Stock insuffisant', 'error'); return; }
-  order[productId] = current + 1;
+function addToOrder(pid) {
+  if (!D.currentBarman) { toast('Sélectionne un barman', 'error'); return; }
+  const p = D.products.find(p => p.id == pid);
+  if (!p || p.stock <= 0) return;
+  const cur = order[pid] || 0;
+  if (cur >= p.stock) { toast('Stock insuffisant', 'error'); return; }
+  order[pid] = cur + 1;
   renderOrder();
 }
 
 function renderOrder() {
-  const items = Object.entries(order).filter(([_, q]) => q > 0);
+  const items = Object.entries(order).filter(([_,q]) => q > 0);
   const card = document.getElementById('order-card');
-  if (items.length === 0) { card.style.display = 'none'; return; }
+  if (!items.length) { card.style.display = 'none'; return; }
   card.style.display = 'block';
-
   let total = 0;
   document.getElementById('order-items').innerHTML = items.map(([id, qty]) => {
-    const prod = data.products.find(p => p.id == id);
-    if (!prod) return '';
-    const subtotal = prod.price * qty;
-    total += subtotal;
-    return `
-      <div class="order-item">
-        <div class="order-item-name">${prod.name}</div>
-        <div class="order-item-controls">
-          <button class="qty-btn" onclick="changeQty(${id}, -1)">−</button>
-          <div class="order-qty">${qty}</div>
-          <button class="qty-btn" onclick="changeQty(${id}, 1)">+</button>
-        </div>
-        <div class="order-item-price">${subtotal.toLocaleString('fr-FR')}</div>
-      </div>
-    `;
+    const p = D.products.find(p => p.id == id);
+    if (!p) return '';
+    const sub = p.price * qty; total += sub;
+    return `<div class="order-item">
+      <div class="order-item-name">${p.name}</div>
+      <button class="qty-btn" onclick="changeQty(${id},-1)">−</button>
+      <input type="number" class="qty-input" value="${qty}" min="1" max="${p.stock}"
+        onchange="setQty(${id},this.value)" onclick="this.select()">
+      <button class="qty-btn" onclick="changeQty(${id},1)">+</button>
+      <div class="order-item-price">${sub.toLocaleString('fr-FR')}</div>
+    </div>`;
   }).join('');
   document.getElementById('order-total').textContent = total.toLocaleString('fr-FR');
 }
 
-function changeQty(productId, delta) {
-  const current = order[productId] || 0;
-  const prod = data.products.find(p => p.id == productId);
-  const newQty = current + delta;
-  if (newQty <= 0) { delete order[productId]; }
-  else if (newQty <= prod.stock) { order[productId] = newQty; }
+function setQty(pid, val) {
+  const p = D.products.find(p => p.id == pid);
+  const n = parseInt(val) || 0;
+  if (n <= 0) delete order[pid];
+  else order[pid] = Math.min(n, p.stock);
+  renderOrder();
+}
+
+function changeQty(pid, delta) {
+  const cur = order[pid] || 0;
+  const p = D.products.find(p => p.id == pid);
+  const nq = cur + delta;
+  if (nq <= 0) delete order[pid];
+  else if (nq <= p.stock) order[pid] = nq;
   renderOrder();
 }
 
 function clearOrder() { order = {}; renderOrder(); }
 
 function validateOrder() {
-  const items = Object.entries(order).filter(([_, q]) => q > 0);
-  if (items.length === 0) return;
-  if (!data.currentBarman) { toast('Sélectionne un barman', 'error'); return; }
-
+  const items = Object.entries(order).filter(([_,q]) => q > 0);
+  if (!items.length || !D.currentBarman) return;
+  const barman = D.barmans.find(b => b.id === D.currentBarman);
   const saleItems = items.map(([id, qty]) => {
-    const prod = data.products.find(p => p.id == id);
-    prod.stock -= qty;
-    return { productId: parseInt(id), name: prod.name, qty, price: prod.price, subtotal: prod.price * qty };
+    const p = D.products.find(p => p.id == id);
+    p.stock -= qty;
+    return {productId: parseInt(id), name: p.name, qty, price: p.price, subtotal: p.price * qty};
   });
-
-  const total = saleItems.reduce((s, i) => s + i.subtotal, 0);
-  const barman = data.barmans.find(b => b.id === data.currentBarman);
-
-  data.sales.push({
-    id: Date.now(),
-    barmanId: data.currentBarman,
-    barmanName: barman?.name,
-    items: saleItems,
-    total,
-    time: new Date().toISOString()
+  const total = saleItems.reduce((s,i) => s + i.subtotal, 0);
+  D.sales.push({
+    id: Date.now(), barmanId: D.currentBarman, barmanName: barman?.name,
+    items: saleItems, total, time: new Date().toISOString()
   });
-
-  save();
-  order = {};
-  toast(`✓ Vente de ${total.toLocaleString('fr-FR')} FCFA enregistrée`, 'success');
-  renderPOS();
+  save(); order = {};
+  toast(`✓ ${total.toLocaleString('fr-FR')} FCFA enregistrée`, 'success');
+  renderPOS(); renderCA();
 }
 
-// ==================== STOCK ====================
+// ===================== STOCK =====================
 function renderStock() {
-  const list = document.getElementById('stock-list');
-  if (data.products.length === 0) {
-    list.innerHTML = '<div class="empty"><div class="empty-icon">📦</div>Aucun produit</div>';
-    return;
-  }
-  list.innerHTML = data.products.map(p => `
+  // Résumé par produit (ventes du jour + stock)
+  const pq = {}, pr = {};
+  todaySales().forEach(s => s.items.forEach(i => {
+    pq[i.productId] = (pq[i.productId]||0) + i.qty;
+    pr[i.productId] = (pr[i.productId]||0) + i.subtotal;
+  }));
+  document.getElementById('stock-resume').innerHTML = D.products.map(p => `
+    <div class="report-row">
+      <div><div class="list-item-name">${p.name}</div><div class="list-item-sub">${p.price.toLocaleString('fr-FR')} FCFA</div></div>
+      <div style="text-align:right;">
+        <div class="badge badge-amber">×${pq[p.id]||0} vendus</div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">${(pr[p.id]||0).toLocaleString('fr-FR')} FCFA</div>
+      </div>
+    </div>`
+  ).join('') || '<div class="empty" style="padding:10px 0;">Aucun produit</div>';
+
+  // Gestion stock
+  document.getElementById('stock-list').innerHTML = D.products.map(p => `
     <div class="list-item">
-      <div>
-        <div class="list-item-name">${p.name}</div>
-        <div class="list-item-sub">${p.price.toLocaleString('fr-FR')} FCFA</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;">
+      <div><div class="list-item-name">${p.name}</div><div class="list-item-sub">${p.price.toLocaleString('fr-FR')} FCFA</div></div>
+      <div style="display:flex;align-items:center;gap:8px;">
         <div class="stock-controls">
-          <button class="qty-btn" onclick="adjustStock(${p.id}, -1)">−</button>
-          <div class="stock-qty ${p.stock <= 5 ? 'badge-red' : ''}">${p.stock}</div>
-          <button class="qty-btn" onclick="adjustStock(${p.id}, 1)">+</button>
+          <button class="qty-btn" onclick="adjStock(${p.id},-1)">−</button>
+          <div class="stock-qty ${p.stock<=5?'badge-red':''}">${p.stock}</div>
+          <button class="qty-btn" onclick="adjStock(${p.id},1)">+</button>
         </div>
-        <button class="btn btn-secondary" onclick="editProduct(${p.id})" style="padding:6px 10px;font-size:12px;">✏️</button>
+        <button class="btn btn-secondary" onclick="editProduct(${p.id})" style="padding:5px 9px;font-size:11px;">✏️</button>
       </div>
-    </div>
-  `).join('');
+    </div>`
+  ).join('') || '<div class="empty"><div class="empty-icon">📦</div>Aucun produit</div>';
 }
 
-function adjustStock(productId, delta) {
-  const prod = data.products.find(p => p.id == productId);
-  if (!prod) return;
-  prod.stock = Math.max(0, prod.stock + delta);
-  save();
-  renderStock();
+function adjStock(pid, delta) {
+  const p = D.products.find(p => p.id == pid);
+  if (!p) return;
+  p.stock = Math.max(0, p.stock + delta);
+  save(); renderStock();
 }
 
-function openAddProductModal() {
+function openAddProduct() {
   document.getElementById('edit-prod-id').value = '';
   document.getElementById('modal-prod-title').textContent = '+ NOUVEAU PRODUIT';
   document.getElementById('prod-name-input').value = '';
   document.getElementById('prod-price-input').value = '';
   document.getElementById('prod-stock-input').value = '';
-  openModal('modal-add-product');
+  openModal('modal-product');
 }
 
 function editProduct(id) {
-  const prod = data.products.find(p => p.id == id);
-  if (!prod) return;
+  const p = D.products.find(p => p.id == id);
+  if (!p) return;
   document.getElementById('edit-prod-id').value = id;
-  document.getElementById('modal-prod-title').textContent = '✏️ MODIFIER PRODUIT';
-  document.getElementById('prod-name-input').value = prod.name;
-  document.getElementById('prod-price-input').value = prod.price;
-  document.getElementById('prod-stock-input').value = prod.stock;
-  openModal('modal-add-product');
+  document.getElementById('modal-prod-title').textContent = '✏️ MODIFIER';
+  document.getElementById('prod-name-input').value = p.name;
+  document.getElementById('prod-price-input').value = p.price;
+  document.getElementById('prod-stock-input').value = p.stock;
+  openModal('modal-product');
 }
 
 function saveProduct() {
@@ -973,198 +736,279 @@ function saveProduct() {
   const price = parseFloat(document.getElementById('prod-price-input').value) || 0;
   const stock = parseInt(document.getElementById('prod-stock-input').value) || 0;
   if (!name || price <= 0) { toast('Remplis tous les champs', 'error'); return; }
-
-  const editId = document.getElementById('edit-prod-id').value;
-  if (editId) {
-    const prod = data.products.find(p => p.id == editId);
-    if (prod) { prod.name = name; prod.price = price; prod.stock = stock; }
+  const eid = document.getElementById('edit-prod-id').value;
+  if (eid) {
+    const p = D.products.find(p => p.id == eid);
+    if (p) { p.name = name; p.price = price; p.stock = stock; }
   } else {
-    data.products.push({ id: Date.now(), name, price, stock });
+    D.products.push({id: Date.now(), name, price, stock, initialStock: stock});
   }
-  save();
-  closeModal('modal-add-product');
-  renderStock();
-  renderPOS();
-  toast('Produit enregistré ✓', 'success');
+  save(); closeModal('modal-product'); renderStock(); renderPOS(); toast('Enregistré ✓', 'success');
 }
 
-// ==================== BARMANS ====================
-function showBarmanModal() {
-  renderBarmanModal();
-  openModal('modal-barman');
+// ===================== BARMANS =====================
+function updateHeaderBarman() {
+  const b = D.barmans.find(b => b.id === D.currentBarman);
+  document.getElementById('header-barman').textContent = b ? b.name : 'Barman';
 }
+
+function showBarmanModal() { renderBarmanModal(); openModal('modal-barman'); }
 
 function renderBarmanModal() {
-  const list = document.getElementById('modal-barman-list');
-  list.innerHTML = data.barmans.map(b => `
-    <div class="list-item" onclick="selectCurrentBarman(${b.id})" style="cursor:pointer;">
+  document.getElementById('modal-barman-list').innerHTML = D.barmans.map(b => `
+    <div class="list-item" onclick="selectBarman(${b.id})" style="cursor:pointer;">
       <div class="list-item-name">${b.name}</div>
       <div style="display:flex;gap:8px;align-items:center;">
-        ${b.id === data.currentBarman ? '<span class="badge badge-green">En service</span>' : ''}
-        <button class="btn btn-secondary" onclick="event.stopPropagation();removeBarman(${b.id})" style="padding:4px 8px;font-size:12px;">✕</button>
+        ${b.id === D.currentBarman ? '<span class="badge badge-green">En service</span>' : ''}
+        <button class="btn btn-secondary" onclick="event.stopPropagation();removeBarman(${b.id})" style="padding:4px 8px;font-size:11px;">✕</button>
       </div>
-    </div>
-  `).join('');
+    </div>`
+  ).join('');
 }
 
-function selectCurrentBarman(id) {
-  data.currentBarman = id;
-  save();
-  updateHeaderBarman();
-  renderBarmanModal();
-  renderPOS();
-  closeModal('modal-barman');
+function selectBarman(id) {
+  D.currentBarman = id; save(); updateHeaderBarman(); renderBarmanModal(); renderPOS(); closeModal('modal-barman');
 }
 
 function addBarman() {
-  const input = document.getElementById('new-barman-input');
-  const name = input.value.trim();
-  if (!name) return;
-  data.barmans.push({ id: Date.now(), name });
-  input.value = '';
-  save();
-  renderBarmanModal();
-  renderStats();
+  const i = document.getElementById('new-barman-input');
+  const n = i.value.trim(); if (!n) return;
+  D.barmans.push({id: Date.now(), name: n}); i.value = '';
+  save(); renderBarmanModal(); renderAccueil();
 }
 
 function removeBarman(id) {
-  data.barmans = data.barmans.filter(b => b.id !== id);
-  if (data.currentBarman === id) data.currentBarman = data.barmans[0]?.id || null;
-  save();
-  renderBarmanModal();
-  updateHeaderBarman();
+  D.barmans = D.barmans.filter(b => b.id !== id);
+  if (D.currentBarman === id) D.currentBarman = D.barmans[0]?.id || null;
+  save(); renderBarmanModal(); updateHeaderBarman();
 }
 
-// ==================== HISTORIQUE ====================
-function renderHistorique() {
-  const el = document.getElementById('historique-list');
-  const all = [...data.sales].reverse();
-  if (all.length === 0) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">📋</div>Aucune vente aujourd\'hui</div>';
-    return;
+// ===================== HISTORIQUE =====================
+function setPeriod(p, el) {
+  histPeriod = p;
+  document.querySelectorAll('#page-historique .period-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderHistorique();
+}
+
+function getSalesByPeriod(period) {
+  const allSales = getAllSales();
+  const now = new Date();
+  if (period === 'jour') {
+    const today = now.toDateString();
+    return allSales.filter(s => new Date(s.time).toDateString() === today);
   }
-  el.innerHTML = all.map(sale => {
-    const time = new Date(sale.time).toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-    return `
-      <div class="sale-item">
-        <div class="sale-item-header">
-          <div class="sale-item-barman">👨‍🍺 ${sale.barmanName}</div>
+  if (period === 'semaine') {
+    const start = new Date(now); start.setDate(now.getDate() - 6); start.setHours(0,0,0,0);
+    return allSales.filter(s => new Date(s.time) >= start);
+  }
+  if (period === 'mois') {
+    const start = new Date(now); start.setDate(now.getDate() - 29); start.setHours(0,0,0,0);
+    return allSales.filter(s => new Date(s.time) >= start);
+  }
+  return allSales;
+}
+
+function renderHistorique() {
+  const sales = getSalesByPeriod(histPeriod);
+  const total = sales.reduce((s,x) => s + x.total, 0);
+  const pq = {};
+  sales.forEach(s => s.items.forEach(i => { pq[i.productId] = (pq[i.productId]||0) + i.qty; }));
+  const top = Object.entries(pq).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([id,qty]) => {
+    const p = D.products.find(p => p.id == id);
+    return `${p?.name||'?'} ×${qty}`;
+  }).join(' · ') || '—';
+
+  document.getElementById('historique-stats').innerHTML = `
+    <div class="report-row"><span>Ventes</span><span>${sales.length}</span></div>
+    <div class="report-row"><span>Top produits</span><span style="font-size:12px;color:var(--text-muted)">${top}</span></div>
+    <div class="report-row total"><span>TOTAL</span><span>${total.toLocaleString('fr-FR')} FCFA</span></div>`;
+
+  const el = document.getElementById('historique-list');
+  const sorted = [...sales].reverse();
+  if (!sorted.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📋</div>Aucune vente</div>'; return; }
+
+  // Grouper par date
+  const byDate = {};
+  sorted.forEach(s => {
+    const d = new Date(s.time).toLocaleDateString('fr-FR', {weekday:'short', day:'numeric', month:'short'});
+    if (!byDate[d]) byDate[d] = [];
+    byDate[d].push(s);
+  });
+
+  el.innerHTML = Object.entries(byDate).map(([date, ss]) => `
+    <div class="month-label">📅 ${date}</div>
+    ${ss.map(sale => {
+      const time = new Date(sale.time).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+      return `<div class="sale-item">
+        <div class="sale-header">
+          <div class="sale-barman">👨‍🍺 ${sale.barmanName || '?'}</div>
           <div style="display:flex;align-items:center;gap:8px;">
-            <div class="sale-item-time">${time}</div>
-            <div class="sale-item-total">${sale.total.toLocaleString('fr-FR')} FCFA</div>
+            <div class="sale-time">${time}</div>
+            <div class="sale-total">${sale.total.toLocaleString('fr-FR')} FCFA</div>
           </div>
         </div>
-        <div class="sale-item-detail">${sale.items.map(i => `${i.name} ×${i.qty}`).join(' · ')}</div>
-      </div>
-    `;
-  }).join('');
+        <div class="sale-detail">${sale.items.map(i=>`${i.name} ×${i.qty}`).join(' · ')}</div>
+      </div>`;
+    }).join('')}
+  `).join('');
 }
 
-function clearHistory() {
-  if (!confirm('Effacer tout l\'historique du jour ?')) return;
-  data.sales = [];
-  save();
-  renderHistorique();
+// ===================== STATS =====================
+function setStatPeriod(p, el) {
+  statPeriod = p;
+  document.querySelectorAll('#page-stats .period-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
   renderStats();
-  toast('Historique effacé', 'success');
 }
 
-// ==================== CAISSE ====================
-function renderCaisse() {
-  const total = data.sales.reduce((s, sale) => s + sale.total, 0);
-  const nbVentes = data.sales.length;
-
-  // Report
-  document.getElementById('caisse-report').innerHTML = `
-    <div class="report-row"><span>Nombre de ventes</span><span>${nbVentes}</span></div>
-    <div class="report-row total"><span>TOTAL CAISSE</span><span>${total.toLocaleString('fr-FR')} FCFA</span></div>
-  `;
-
+function renderStats() {
+  const sales = getSalesByPeriod(statPeriod);
   // Par barman
-  const barmanTotals = {};
-  const barmanCounts = {};
-  data.sales.forEach(s => {
-    barmanTotals[s.barmanId] = (barmanTotals[s.barmanId] || 0) + s.total;
-    barmanCounts[s.barmanId] = (barmanCounts[s.barmanId] || 0) + 1;
-  });
-  const barmanEl = document.getElementById('caisse-barmans');
-  barmanEl.innerHTML = data.barmans.map(b => `
-    <div class="report-row">
-      <span>${b.name} <small style="color:var(--text-muted)">(${barmanCounts[b.id] || 0} ventes)</small></span>
-      <span>${(barmanTotals[b.id] || 0).toLocaleString('fr-FR')} FCFA</span>
+  const bt = {}, bc = {};
+  sales.forEach(s => { bt[s.barmanId] = (bt[s.barmanId]||0) + s.total; bc[s.barmanId] = (bc[s.barmanId]||0) + 1; });
+  const maxB = Math.max(...Object.values(bt), 1);
+  document.getElementById('stats-barmans').innerHTML = D.barmans.sort((a,b) => (bt[b.id]||0)-(bt[a.id]||0)).map(b => `
+    <div class="stat-bar-row">
+      <div class="stat-bar-label">${b.name}</div>
+      <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${(bt[b.id]||0)/maxB*100}%"></div></div>
+      <div class="stat-bar-val">${((bt[b.id]||0)/1000).toFixed(0)}k</div>
     </div>
-  `).join('') || '<div class="empty" style="padding:12px 0;">Aucune donnée</div>';
+    <div style="font-size:10px;color:var(--text-muted);margin:-4px 0 6px 0;padding-left:0;">${(bt[b.id]||0).toLocaleString('fr-FR')} FCFA · ${bc[b.id]||0} ventes</div>
+  `).join('') || '<div class="empty" style="padding:10px 0;">Aucune donnée</div>';
 
   // Par produit
-  const prodQty = {};
-  const prodRevenue = {};
-  data.sales.forEach(s => s.items.forEach(i => {
-    prodQty[i.productId] = (prodQty[i.productId] || 0) + i.qty;
-    prodRevenue[i.productId] = (prodRevenue[i.productId] || 0) + i.subtotal;
-  }));
-  const sorted = Object.entries(prodQty).sort((a, b) => b[1] - a[1]);
-  const prodEl = document.getElementById('caisse-produits');
-  prodEl.innerHTML = sorted.map(([id, qty]) => {
-    const prod = data.products.find(p => p.id == id);
-    return `
-      <div class="report-row">
-        <span>${prod?.name || '?'} <small style="color:var(--text-muted)">×${qty}</small></span>
-        <span>${(prodRevenue[id] || 0).toLocaleString('fr-FR')} FCFA</span>
-      </div>
-    `;
-  }).join('') || '<div class="empty" style="padding:12px 0;">Aucune vente</div>';
+  const pq = {}, pr = {};
+  sales.forEach(s => s.items.forEach(i => { pq[i.productId] = (pq[i.productId]||0) + i.qty; pr[i.productId] = (pr[i.productId]||0) + i.subtotal; }));
+  const sortedP = Object.entries(pq).sort((a,b) => b[1]-a[1]);
+  const maxP = sortedP[0]?.[1] || 1;
+  document.getElementById('stats-produits').innerHTML = sortedP.map(([id,qty]) => {
+    const p = D.products.find(p => p.id == id);
+    return `<div class="stat-bar-row">
+      <div class="stat-bar-label">${p?.name||'?'}</div>
+      <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${qty/maxP*100}%"></div></div>
+      <div class="stat-bar-val">×${qty}</div>
+    </div>
+    <div style="font-size:10px;color:var(--text-muted);margin:-4px 0 6px 0;">${(pr[id]||0).toLocaleString('fr-FR')} FCFA</div>`;
+  }).join('') || '<div class="empty" style="padding:10px 0;">Aucune vente</div>';
+
+  // Par jour
+  const jca = {};
+  sales.forEach(s => {
+    const d = new Date(s.time).toLocaleDateString('fr-FR', {day:'numeric', month:'short'});
+    jca[d] = (jca[d]||0) + s.total;
+  });
+  const maxJ = Math.max(...Object.values(jca), 1);
+  document.getElementById('stats-jours').innerHTML = Object.entries(jca).map(([day, ca]) => `
+    <div class="stat-bar-row">
+      <div class="stat-bar-label">${day}</div>
+      <div class="stat-bar-track"><div class="stat-bar-fill" style="width:${ca/maxJ*100}%"></div></div>
+      <div class="stat-bar-val">${(ca/1000).toFixed(0)}k</div>
+    </div>`
+  ).join('') || '<div class="empty" style="padding:10px 0;">Aucune donnée</div>';
+}
+
+// ===================== CAISSE =====================
+function renderCaisse() {
+  const sales = D.sales;
+  const total = sales.reduce((s,x) => s + x.total, 0);
+  document.getElementById('caisse-report').innerHTML = `
+    <div class="report-row"><span>Ventes du jour</span><span>${sales.length}</span></div>
+    <div class="report-row total"><span>TOTAL</span><span>${total.toLocaleString('fr-FR')} FCFA</span></div>`;
+
+  const bt = {}, bc = {};
+  sales.forEach(s => { bt[s.barmanId] = (bt[s.barmanId]||0) + s.total; bc[s.barmanId] = (bc[s.barmanId]||0) + 1; });
+  document.getElementById('caisse-barmans').innerHTML = D.barmans.map(b =>
+    `<div class="report-row"><span>${b.name} <small style="color:var(--text-muted)">(${bc[b.id]||0})</small></span><span>${(bt[b.id]||0).toLocaleString('fr-FR')} FCFA</span></div>`
+  ).join('') || '<div class="empty" style="padding:10px 0;">Aucune donnée</div>';
+
+  const pq = {}, pr = {};
+  sales.forEach(s => s.items.forEach(i => { pq[i.productId] = (pq[i.productId]||0) + i.qty; pr[i.productId] = (pr[i.productId]||0) + i.subtotal; }));
+  document.getElementById('caisse-produits').innerHTML = Object.entries(pq).sort((a,b)=>b[1]-a[1]).map(([id,qty]) => {
+    const p = D.products.find(p => p.id == id);
+    return `<div class="report-row"><span>${p?.name||'?'} <small style="color:var(--text-muted)">×${qty}</small></span><span>${(pr[id]||0).toLocaleString('fr-FR')} FCFA</span></div>`;
+  }).join('') || '<div class="empty" style="padding:10px 0;">Aucune vente</div>';
 }
 
 function confirmCloture() { openModal('modal-cloture'); }
 
 function doCloture() {
-  const archive = {
+  const total = D.sales.reduce((s,x) => s + x.total, 0);
+  // Archiver avec snapshot du stock
+  D.archives.push({
     date: new Date().toISOString(),
-    sales: data.sales,
-    total: data.sales.reduce((s, sale) => s + sale.total, 0)
-  };
-  data.history.push(archive);
-  data.sales = [];
+    sales: [...D.sales],
+    total,
+    stockSnapshot: D.products.map(p => ({id: p.id, name: p.name, stock: p.stock, price: p.price}))
+  });
+  // Garder 30 jours
+  const limit = new Date(Date.now() - 30*24*60*60*1000);
+  D.archives = D.archives.filter(a => new Date(a.date) >= limit);
+  D.sales = [];
   save();
   closeModal('modal-cloture');
-  toast('✓ Caisse clôturée avec succès', 'success');
-  renderStats();
-  renderCaisse();
-  renderHistorique();
-  renderPOS();
+  toast('✓ Caisse clôturée et archivée', 'success');
+  renderAll();
 }
+
 
 function resetAll() {
-  if (!confirm('Réinitialiser complètement l\'application ? Toutes les données seront perdues.')) return;
-  localStorage.removeItem('barmanager_v3');
-  location.reload();
+  const confirmReset = confirm(
+    'Réinitialiser complètement ? Toutes les données seront perdues.'
+  );
+
+  if (!confirmReset) return;
+
+  localStorage.removeItem('bm_v5');
+
+  setTimeout(() => {
+    location.reload();
+  }, 200);
 }
 
-// ==================== MODAL HELPERS ====================
+
+// ===================== HELPERS =====================
+function getAllSales() {
+  const all = [...D.sales];
+  if(D.archives){D.archives.forEach(a=>{if(a&&a.sales)a.sales.forEach(s=>all.push(s));});}
+  return all;
+}
+
+function todaySales() {
+  const today = new Date().toDateString();
+  return getAllSales().filter(s => new Date(s.time).toDateString() === today);
+}
+
+function weekSales() {
+  const start = new Date(); start.setDate(start.getDate() - 6); start.setHours(0,0,0,0);
+  return getAllSales().filter(s => new Date(s.time) >= start);
+}
+
+function monthSales() {
+  const start = new Date(); start.setDate(start.getDate() - 29); start.setHours(0,0,0,0);
+  return getAllSales().filter(s => new Date(s.time) >= start);
+}
+
+// ===================== MODAL/TOAST =====================
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', function(e) {
-    if (e.target === this) this.classList.remove('open');
-  });
-});
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+}));
 
-// ==================== KEYBOARD ====================
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    if (document.getElementById('w-barman-name') === document.activeElement) addWelcomeBarman();
-    if (document.getElementById('new-barman-input') === document.activeElement) addBarman();
-  }
-});
-
-// ==================== TOAST ====================
 function toast(msg, type = '') {
   const el = document.createElement('div');
-  el.className = 'toast ' + type;
-  el.textContent = msg;
+  el.className = 'toast ' + type; el.textContent = msg;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 2800);
 }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (document.getElementById('w-barman-name') === document.activeElement) addWB();
+    if (document.getElementById('new-barman-input') === document.activeElement) addBarman();
+  }
+});
 </script>
 </body>
 </html>
